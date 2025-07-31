@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Modal, Text } from 'react-native';
 import { Image } from 'expo-image';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+import React, { useState } from 'react';
+import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function Header() {
   const [showDropdown, setShowDropdown] = useState(false);
