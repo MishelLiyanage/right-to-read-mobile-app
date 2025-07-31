@@ -1,0 +1,38 @@
+{
+    "2": {
+        "audio_path": "output\\grade_3_english_book-22-04-2025-15-02-05\\block_2_audio.mp3",
+        "speech_marks_path": "output\\grade_3_english_book-22-04-2025-15-02-05\\block_2_speech_marks.json"
+    },
+    "3": {
+        "audio_path": "output\\grade_3_english_book-22-04-2025-15-02-05\\block_3_audio.mp3",
+        "speech_marks_path": "output\\grade_3_english_book-22-04-2025-15-02-05\\block_3_speech_marks.json"
+    },
+    "4": {
+        "audio_path": "output\\grade_3_english_book-22-04-2025-15-02-05\\block_4_audio.mp3",
+        "speech_marks_path": "output\\grade_3_english_book-22-04-2025-15-02-05\\block_4_speech_marks.json"
+    },
+    "5": {
+        "audio_path": "output\\grade_3_english_book-22-04-2025-15-02-05\\block_5_audio.mp3",
+        "speech_marks_path": "output\\grade_3_english_book-22-04-2025-15-02-05\\block_5_speech_marks.json"
+    },
+    "6": {
+        "audio_path": "output\\grade_3_english_book-22-04-2025-15-02-05\\block_6_audio.mp3",
+        "speech_marks_path": "output\\grade_3_english_book-22-04-2025-15-02-05\\block_6_speech_marks.json"
+    },
+    "7": {
+        "audio_path": "output\\grade_3_english_book-22-04-2025-15-02-05\\block_7_audio.mp3",
+        "speech_marks_path": "output\\grade_3_english_book-22-04-2025-15-02-05\\block_7_speech_marks.json"
+    },
+    "8": {
+        "audio_path": "output\\grade_3_english_book-22-04-2025-15-02-05\\block_8_audio.mp3",
+        "speech_marks_path": "output\\grade_3_english_book-22-04-2025-15-02-05\\block_8_speech_marks.json"
+    },
+    "9": {
+        "audio_path": "output\\grade_3_english_book-22-04-2025-15-02-05\\block_9_audio.mp3",
+        "speech_marks_path": "output\\grade_3_english_book-22-04-2025-15-02-05\\block_9_speech_marks.json"
+    },
+    "10": {
+        "audio_path": "output\\grade_3_english_book-22-04-2025-15-02-05\\block_10_audio.mp3",
+        "speech_marks_path": "output\\grade_3_english_book-22-04-2025-15-02-05\\block_10_speech_marks.json"
+    }
+}
