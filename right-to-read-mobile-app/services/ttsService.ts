@@ -13,6 +13,7 @@ export interface TTSServiceCallbacks {
 export class TTSService {
   private currentSound: Audio.Sound | null = null;
   private isPlaying: boolean = false;
+  private isPaused: boolean = false;
   private currentBlockIndex: number = 0;
   private blocks: TextBlock[] = [];
   private callbacks: TTSServiceCallbacks = {};
@@ -64,8 +65,13 @@ export class TTSService {
     }
 
     try {
+      // If resuming from pause, don't reset block index
+      if (!this.isPaused) {
+        this.currentBlockIndex = 0;
+      }
+      
       this.isPlaying = true;
-      this.currentBlockIndex = 0;
+      this.isPaused = false;
       
       this.callbacks.onPlaybackStart?.();
       
@@ -89,7 +95,7 @@ export class TTSService {
       
       await this.playBlock(block);
       
-      // Wait for block to complete
+      // Wait for block to complete (this will wait during pause)
       await this.waitForCompletion();
       
       if (!this.isPlaying) break;
@@ -97,7 +103,7 @@ export class TTSService {
       this.callbacks.onBlockComplete?.(i);
     }
     
-    if (this.isPlaying) {
+    if (this.isPlaying && !this.isPaused) {
       this.isPlaying = false;
       this.callbacks.onPlaybackComplete?.();
     }
@@ -149,11 +155,17 @@ export class TTSService {
           return;
         }
 
+        // If paused, keep waiting without resolving
+        if (this.isPaused) {
+          setTimeout(checkStatus, 100);
+          return;
+        }
+
         try {
           const status = await this.currentSound.getStatusAsync();
           if (status.isLoaded && status.didJustFinish) {
             resolve();
-          } else if (status.isLoaded && !status.isPlaying) {
+          } else if (status.isLoaded && !status.isPlaying && !this.isPaused) {
             resolve();
           } else {
             setTimeout(checkStatus, 100);
@@ -170,6 +182,7 @@ export class TTSService {
   async stop(): Promise<void> {
     try {
       this.isPlaying = false;
+      this.isPaused = false;
       
       if (this.currentSound) {
         await this.currentSound.stopAsync();
@@ -184,13 +197,42 @@ export class TTSService {
     }
   }
 
+  async pause(): Promise<void> {
+    try {
+      if (this.currentSound && this.isPlaying && !this.isPaused) {
+        await this.currentSound.pauseAsync();
+        this.isPaused = true;
+        console.log('TTS Service: Paused');
+      }
+    } catch (error) {
+      console.error('Error pausing TTS:', error);
+    }
+  }
+
+  async resume(): Promise<void> {
+    try {
+      if (this.currentSound && this.isPlaying && this.isPaused) {
+        await this.currentSound.playAsync();
+        this.isPaused = false;
+        console.log('TTS Service: Resumed');
+      }
+    } catch (error) {
+      console.error('Error resuming TTS:', error);
+    }
+  }
+
   async cleanup(): Promise<void> {
     await this.stop();
+    this.isPaused = false;
   }
 
   // Status getters
   getIsPlaying(): boolean {
     return this.isPlaying;
+  }
+
+  getIsPaused(): boolean {
+    return this.isPaused;
   }
 
   getCurrentBlockIndex(): number {

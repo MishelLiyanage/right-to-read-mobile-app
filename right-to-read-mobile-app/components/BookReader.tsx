@@ -22,6 +22,7 @@ const ORIGINAL_PAGE_SIZE: PageSize = { width: 511, height: 755 };
 export default function BookReader({ book, onClose }: BookReaderProps) {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [currentBlockIndex, setCurrentBlockIndex] = useState(-1);
   const [currentPlaybackPosition, setCurrentPlaybackPosition] = useState(0);
   const [currentBlockHighlightData, setCurrentBlockHighlightData] = useState<BlockHighlightData | null>(null);
@@ -36,16 +37,19 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
     const callbacks: TTSServiceCallbacks = {
       onPlaybackStart: () => {
         setIsPlaying(true);
+        setIsPaused(false);
         console.log('Started reading page content');
       },
       onPlaybackComplete: () => {
         setIsPlaying(false);
+        setIsPaused(false);
         setCurrentBlockIndex(-1);
         setCurrentBlockHighlightData(null);
         console.log('Completed reading page content');
       },
       onPlaybackError: (error) => {
         setIsPlaying(false);
+        setIsPaused(false);
         setCurrentBlockIndex(-1);
         setCurrentBlockHighlightData(null);
         Alert.alert('Playback Error', error);
@@ -95,10 +99,32 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
     }
 
     try {
-      await ttsService.current.startReading();
+      if (isPaused) {
+        // Resume if paused
+        await ttsService.current.resume();
+        setIsPaused(false);
+        console.log('Resumed reading from pause');
+      } else if (!isPlaying) {
+        // Start from beginning if not playing
+        await ttsService.current.startReading();
+        console.log('Started reading from beginning');
+      }
     } catch (error) {
-      console.error('Error starting TTS:', error);
-      Alert.alert('Error', 'Failed to start reading');
+      console.error('Error with play/resume:', error);
+      Alert.alert('Error', 'Failed to start/resume reading');
+    }
+  };
+
+  const handlePauseReading = async () => {
+    if (ttsService.current && isPlaying && !isPaused) {
+      try {
+        await ttsService.current.pause();
+        setIsPaused(true);
+        console.log('Paused reading');
+      } catch (error) {
+        console.error('Error pausing TTS:', error);
+        Alert.alert('Error', 'Failed to pause reading');
+      }
     }
   };
 
@@ -106,6 +132,7 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
     if (ttsService.current) {
       await ttsService.current.stop();
       setIsPlaying(false);
+      setIsPaused(false);
     }
   };
 
@@ -163,7 +190,7 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
                 bounding_boxes: currentBlockHighlightData.bounding_boxes
               }}
               speechMarks={currentBlockHighlightData.speechMarks}
-              isPlaying={isPlaying}
+              isPlaying={isPlaying && !isPaused}
               currentTime={currentPlaybackPosition}
               originalPageSize={ORIGINAL_PAGE_SIZE}
               renderedImageSize={renderedImageSize}
@@ -181,19 +208,31 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
         <ThemedText style={styles.audioTitle}>Listen to this page:</ThemedText>
         <View style={styles.controlButtons}>
           <TouchableOpacity 
-            style={[styles.controlButton, styles.playButton]} 
-            onPress={handlePlayPage}
-            disabled={isPlaying}
+            style={[
+              styles.controlButton, 
+              isPaused 
+                ? styles.resumeButton 
+                : isPlaying 
+                  ? styles.pauseButton 
+                  : styles.playButton
+            ]} 
+            onPress={isPaused ? handlePlayPage : isPlaying ? handlePauseReading : handlePlayPage}
+            disabled={false}
           >
             <ThemedText style={styles.controlButtonText}>
-              {isPlaying ? '▶ Reading...' : '▶ Play'}
+              {isPaused 
+                ? '▶ Resume' 
+                : isPlaying 
+                  ? '⏸ Pause' 
+                  : '▶ Play'
+              }
             </ThemedText>
           </TouchableOpacity>
           
           <TouchableOpacity 
             style={[styles.controlButton, styles.stopButton]} 
             onPress={handleStopReading}
-            disabled={!isPlaying}
+            disabled={!isPlaying && !isPaused}
           >
             <ThemedText style={styles.controlButtonText}>⏹ Stop</ThemedText>
           </TouchableOpacity>
@@ -284,6 +323,12 @@ const styles = StyleSheet.create({
   },
   playButton: {
     backgroundColor: '#4CAF50',
+  },
+  pauseButton: {
+    backgroundColor: '#FF9800',
+  },
+  resumeButton: {
+    backgroundColor: '#2196F3',
   },
   stopButton: {
     backgroundColor: '#F44336',
