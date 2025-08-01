@@ -1,7 +1,7 @@
-import { ThemedText } from '@/components/ThemedText';
 import TextHighlighter from '@/components/TextHighlighter';
+import { ThemedText } from '@/components/ThemedText';
+import { BlockHighlightData, highlightDataService } from '@/services/highlightDataService';
 import { TTSService, TTSServiceCallbacks } from '@/services/ttsService';
-import { highlightDataService, BlockHighlightData } from '@/services/highlightDataService';
 import { Book } from '@/types/book';
 import { Image } from 'expo-image';
 import React, { useEffect, useRef, useState } from 'react';

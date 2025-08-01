@@ -1,4 +1,3 @@
-import { TextBlock } from '@/types/book';
 
 export interface SpeechMark {
   time: number;

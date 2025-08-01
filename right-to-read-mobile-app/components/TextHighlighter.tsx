@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 
 interface SpeechMark {
   time: number;
