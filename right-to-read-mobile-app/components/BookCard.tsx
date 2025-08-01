@@ -26,8 +26,8 @@ export default function BookCard({ title, backgroundColor, hasData, onPress }: B
 
 const styles = StyleSheet.create({
   card: {
-    width: 180,
-    height: 200,
+    width: 200,
+    height: 220,
     borderRadius: 12,
     marginRight: 15,
     justifyContent: 'flex-end',

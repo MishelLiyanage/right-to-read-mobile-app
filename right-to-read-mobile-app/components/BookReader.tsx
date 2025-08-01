@@ -28,7 +28,6 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
       },
       onPlaybackComplete: () => {
         setIsPlaying(false);
-        Alert.alert('Reading Complete', 'Finished reading the page.');
         console.log('Completed reading page content');
       },
       onPlaybackError: (error) => {

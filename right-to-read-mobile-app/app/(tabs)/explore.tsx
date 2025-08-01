@@ -1,14 +1,16 @@
+import Banner from '@/components/Banner';
+import Header from '@/components/Header';
+import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/ThemedView';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import Header from '@/components/Header';
-import { ThemedView } from '@/components/ThemedView';
-import { ThemedText } from '@/components/ThemedText';
 
 export default function RecentScreen() {
   return (
     <ThemedView style={styles.container}>
       <Header />
       <ScrollView style={styles.content}>
+        <Banner />
         <View style={styles.section}>
           <ThemedText type="title" style={styles.sectionTitle}>Recent Books</ThemedText>
           <ThemedText style={styles.emptyMessage}>
