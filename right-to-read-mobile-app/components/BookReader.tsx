@@ -1,5 +1,7 @@
 import TextHighlighter from '@/components/TextHighlighter';
 import { ThemedText } from '@/components/ThemedText';
+import { useImageLayout } from '@/hooks/useImageLayout';
+import { PageSize } from '@/services/coordinateScaler';
 import { BlockHighlightData, highlightDataService } from '@/services/highlightDataService';
 import { TTSService, TTSServiceCallbacks } from '@/services/ttsService';
 import { Book } from '@/types/book';
@@ -14,12 +16,17 @@ interface BookReaderProps {
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
+// Original page dimensions based on coordinate analysis
+const ORIGINAL_PAGE_SIZE: PageSize = { width: 511, height: 755 };
+
 export default function BookReader({ book, onClose }: BookReaderProps) {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentBlockIndex, setCurrentBlockIndex] = useState(-1);
   const [currentPlaybackPosition, setCurrentPlaybackPosition] = useState(0);
   const [currentBlockHighlightData, setCurrentBlockHighlightData] = useState<BlockHighlightData | null>(null);
+
+  const { sourceImageDimensions, containerDimensions, getRenderedImageSize, getImageOffset, onImageLoad, onImageLayout } = useImageLayout();
 
   const ttsService = useRef<TTSService | null>(null);
   const currentPage = book.pages?.[currentPageIndex];
@@ -134,27 +141,39 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
           source={currentPage.image}
           style={styles.pageImage}
           contentFit="contain"
+          onLoad={onImageLoad}
+          onLayout={onImageLayout}
         />
         
         {/* Text Highlighting Overlay */}
-        {currentBlockHighlightData && (
-          <TextHighlighter
-            blockData={{
-              id: currentBlockHighlightData.blockId,
-              text: currentBlockHighlightData.text,
-              words: currentBlockHighlightData.words,
-              bounding_boxes: currentBlockHighlightData.bounding_boxes
-            }}
-            speechMarks={currentBlockHighlightData.speechMarks}
-            isPlaying={isPlaying}
-            currentTime={currentPlaybackPosition}
-            imageWidth={1024} // Replace with actual image dimensions
-            imageHeight={768} // Replace with actual image dimensions
-            onWordHighlight={(wordIndex, word) => {
-              console.log(`Highlighting word ${wordIndex}: ${word}`);
-            }}
-          />
-        )}
+        {currentBlockHighlightData && (() => {
+          const renderedImageSize = getRenderedImageSize();
+          const imageOffset = getImageOffset();
+          if (renderedImageSize) {
+            console.log(`Using rendered image size for highlighting: ${renderedImageSize.width}x${renderedImageSize.height}`);
+            console.log(`Original page size: ${ORIGINAL_PAGE_SIZE.width}x${ORIGINAL_PAGE_SIZE.height}`);
+            console.log(`Image offset: x=${imageOffset.x}, y=${imageOffset.y}`);
+          }
+          return renderedImageSize && (
+            <TextHighlighter
+              blockData={{
+                id: currentBlockHighlightData.blockId,
+                text: currentBlockHighlightData.text,
+                words: currentBlockHighlightData.words,
+                bounding_boxes: currentBlockHighlightData.bounding_boxes
+              }}
+              speechMarks={currentBlockHighlightData.speechMarks}
+              isPlaying={isPlaying}
+              currentTime={currentPlaybackPosition}
+              originalPageSize={ORIGINAL_PAGE_SIZE}
+              renderedImageSize={renderedImageSize}
+              imageOffset={imageOffset}
+              onWordHighlight={(wordIndex, word) => {
+                console.log(`Highlighting word ${wordIndex}: ${word}`);
+              }}
+            />
+          );
+        })()}
       </View>
 
       {/* Audio Controls */}

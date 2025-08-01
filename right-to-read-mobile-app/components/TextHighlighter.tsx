@@ -1,5 +1,6 @@
+import { CoordinateScaler, PageSize } from '@/services/coordinateScaler';
 import React, { useEffect, useState } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 interface SpeechMark {
   time: number;
@@ -21,8 +22,9 @@ interface TextHighlighterProps {
   speechMarks: SpeechMark[];
   isPlaying: boolean;
   currentTime: number;
-  imageWidth: number;
-  imageHeight: number;
+  originalPageSize: PageSize;
+  renderedImageSize: PageSize;
+  imageOffset: { x: number; y: number };
   onWordHighlight?: (wordIndex: number, word: string) => void;
 }
 
@@ -31,17 +33,22 @@ export default function TextHighlighter({
   speechMarks,
   isPlaying,
   currentTime,
-  imageWidth,
-  imageHeight,
+  originalPageSize,
+  renderedImageSize,
+  imageOffset,
   onWordHighlight
 }: TextHighlighterProps) {
   const [currentWordIndex, setCurrentWordIndex] = useState<number>(-1);
-  const screenWidth = Dimensions.get('window').width;
-  const screenHeight = Dimensions.get('window').height;
+  const [coordinateScaler, setCoordinateScaler] = useState<CoordinateScaler | null>(null);
 
-  // Calculate scale factors for coordinate mapping
-  const scaleX = screenWidth / imageWidth;
-  const scaleY = screenHeight / imageHeight;
+  // Initialize coordinate scaler when dimensions are available
+  useEffect(() => {
+    if (originalPageSize && renderedImageSize) {
+      const scaler = new CoordinateScaler(originalPageSize, renderedImageSize);
+      setCoordinateScaler(scaler);
+      console.log(`TextHighlighter: Initialized coordinate scaler with offset x=${imageOffset.x}, y=${imageOffset.y}`);
+    }
+  }, [originalPageSize, renderedImageSize, imageOffset]);
 
   useEffect(() => {
     if (!isPlaying || !speechMarks.length) {
@@ -68,7 +75,7 @@ export default function TextHighlighter({
   }, [currentTime, isPlaying, speechMarks, currentWordIndex, onWordHighlight]);
 
   const renderWordHighlights = () => {
-    if (!blockData.bounding_boxes || !speechMarks.length) return null;
+    if (!blockData.bounding_boxes || !speechMarks.length || !coordinateScaler) return null;
 
     return speechMarks.map((speechMark, index) => {
       const isCurrentWord = index === currentWordIndex;
@@ -78,12 +85,12 @@ export default function TextHighlighter({
       const boundingBox = blockData.bounding_boxes[index];
       if (!boundingBox || !boundingBox[0]) return null;
 
-      // Extract coordinates and scale them
-      const [topLeft, bottomRight] = boundingBox;
-      const left = topLeft[0] * scaleX;
-      const top = topLeft[1] * scaleY;
-      const width = (bottomRight[0] - topLeft[0]) * scaleX;
-      const height = (bottomRight[1] - topLeft[1]) * scaleY;
+      // Scale coordinates using the coordinate scaler
+      const scaledBox = coordinateScaler.scaleCoordinates(boundingBox);
+      const left = scaledBox.topLeft[0] + imageOffset.x;
+      const top = scaledBox.topLeft[1] + imageOffset.y;
+      const width = scaledBox.bottomRight[0] - scaledBox.topLeft[0];
+      const height = scaledBox.bottomRight[1] - scaledBox.topLeft[1];
 
       return (
         <View
@@ -110,9 +117,9 @@ export default function TextHighlighter({
   };
 
   const renderBlockHighlight = () => {
-    if (!blockData.bounding_boxes || !blockData.bounding_boxes.length) return null;
+    if (!blockData.bounding_boxes || !blockData.bounding_boxes.length || !coordinateScaler) return null;
 
-    // Calculate overall block bounds
+    // Calculate overall block bounds from original coordinates
     let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
     
     blockData.bounding_boxes.forEach(wordBox => {
@@ -127,10 +134,14 @@ export default function TextHighlighter({
 
     if (minX === Infinity) return null;
 
-    const left = minX * scaleX;
-    const top = minY * scaleY;
-    const width = (maxX - minX) * scaleX;
-    const height = (maxY - minY) * scaleY;
+    // Scale the overall block bounds
+    const scaledTopLeft = coordinateScaler.scalePoint(minX, minY);
+    const scaledBottomRight = coordinateScaler.scalePoint(maxX, maxY);
+    
+    const left = scaledTopLeft[0] + imageOffset.x;
+    const top = scaledTopLeft[1] + imageOffset.y;
+    const width = scaledBottomRight[0] - scaledTopLeft[0];
+    const height = scaledBottomRight[1] - scaledTopLeft[1];
 
     return (
       <View
