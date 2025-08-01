@@ -7,6 +7,7 @@ export interface TTSServiceCallbacks {
   onPlaybackError?: (error: string) => void;
   onBlockStart?: (blockIndex: number, text: string) => void;
   onBlockComplete?: (blockIndex: number) => void;
+  onPlaybackProgress?: (position: number, duration: number, blockIndex: number) => void;
 }
 
 export class TTSService {
@@ -117,8 +118,17 @@ export class TTSService {
 
       // Set up playback status monitoring
       sound.setOnPlaybackStatusUpdate((status: AVPlaybackStatus) => {
-        if (status.isLoaded && status.didJustFinish) {
-          console.log(`Completed: "${block.text}"`);
+        if (status.isLoaded) {
+          if (status.didJustFinish) {
+            console.log(`Completed: "${block.text}"`);
+          } else if (status.positionMillis !== undefined && status.durationMillis !== undefined) {
+            // Provide real-time progress updates
+            this.callbacks.onPlaybackProgress?.(
+              status.positionMillis,
+              status.durationMillis,
+              this.currentBlockIndex
+            );
+          }
         }
       });
 

@@ -1,5 +1,7 @@
 import { ThemedText } from '@/components/ThemedText';
+import TextHighlighter from '@/components/TextHighlighter';
 import { TTSService, TTSServiceCallbacks } from '@/services/ttsService';
+import { highlightDataService, BlockHighlightData } from '@/services/highlightDataService';
 import { Book } from '@/types/book';
 import { Image } from 'expo-image';
 import React, { useEffect, useRef, useState } from 'react';
@@ -15,6 +17,9 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 export default function BookReader({ book, onClose }: BookReaderProps) {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [currentBlockIndex, setCurrentBlockIndex] = useState(-1);
+  const [currentPlaybackPosition, setCurrentPlaybackPosition] = useState(0);
+  const [currentBlockHighlightData, setCurrentBlockHighlightData] = useState<BlockHighlightData | null>(null);
 
   const ttsService = useRef<TTSService | null>(null);
   const currentPage = book.pages?.[currentPageIndex];
@@ -28,18 +33,37 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
       },
       onPlaybackComplete: () => {
         setIsPlaying(false);
+        setCurrentBlockIndex(-1);
+        setCurrentBlockHighlightData(null);
         console.log('Completed reading page content');
       },
       onPlaybackError: (error) => {
         setIsPlaying(false);
+        setCurrentBlockIndex(-1);
+        setCurrentBlockHighlightData(null);
         Alert.alert('Playback Error', error);
         console.error('TTS Error:', error);
       },
-      onBlockStart: (blockIndex, text) => {
+      onBlockStart: async (blockIndex, text) => {
+        setCurrentBlockIndex(blockIndex);
         console.log(`Reading block ${blockIndex + 1}: "${text}"`);
+        
+        // Load highlighting data for current block
+        const blockId = currentPage?.blocks?.[blockIndex]?.id;
+        if (blockId) {
+          try {
+            const highlightData = await highlightDataService.getBlockHighlightData(blockId);
+            setCurrentBlockHighlightData(highlightData);
+          } catch (error) {
+            console.error('Failed to load highlight data:', error);
+          }
+        }
       },
       onBlockComplete: (blockIndex) => {
         console.log(`Completed block ${blockIndex + 1}`);
+      },
+      onPlaybackProgress: (position, duration, blockIndex) => {
+        setCurrentPlaybackPosition(position);
       }
     };
 
@@ -111,6 +135,26 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
           style={styles.pageImage}
           contentFit="contain"
         />
+        
+        {/* Text Highlighting Overlay */}
+        {currentBlockHighlightData && (
+          <TextHighlighter
+            blockData={{
+              id: currentBlockHighlightData.blockId,
+              text: currentBlockHighlightData.text,
+              words: currentBlockHighlightData.words,
+              bounding_boxes: currentBlockHighlightData.bounding_boxes
+            }}
+            speechMarks={currentBlockHighlightData.speechMarks}
+            isPlaying={isPlaying}
+            currentTime={currentPlaybackPosition}
+            imageWidth={1024} // Replace with actual image dimensions
+            imageHeight={768} // Replace with actual image dimensions
+            onWordHighlight={(wordIndex, word) => {
+              console.log(`Highlighting word ${wordIndex}: ${word}`);
+            }}
+          />
+        )}
       </View>
 
       {/* Audio Controls */}
