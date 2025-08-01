@@ -1,9 +1,9 @@
 import { ThemedText } from '@/components/ThemedText';
-import { Book, TextBlock } from '@/types/book';
-import { Audio, AVPlaybackStatus } from 'expo-av';
+import { TTSService, TTSServiceCallbacks } from '@/services/ttsService';
+import { Book } from '@/types/book';
 import { Image } from 'expo-image';
-import React, { useEffect, useState } from 'react';
-import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Alert, Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 interface BookReaderProps {
   book: Book;
@@ -14,76 +14,67 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 export default function BookReader({ book, onClose }: BookReaderProps) {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
-  const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentBlockIndex, setCurrentBlockIndex] = useState<number | null>(null);
 
+  const ttsService = useRef<TTSService | null>(null);
   const currentPage = book.pages?.[currentPageIndex];
 
   useEffect(() => {
-    return () => {
-      if (sound) {
-        sound.unloadAsync();
+    // Initialize TTS Service with callbacks
+    const callbacks: TTSServiceCallbacks = {
+      onPlaybackStart: () => {
+        setIsPlaying(true);
+        console.log('Started reading page content');
+      },
+      onPlaybackComplete: () => {
+        setIsPlaying(false);
+        Alert.alert('Reading Complete', 'Finished reading the page.');
+        console.log('Completed reading page content');
+      },
+      onPlaybackError: (error) => {
+        setIsPlaying(false);
+        Alert.alert('Playback Error', error);
+        console.error('TTS Error:', error);
+      },
+      onBlockStart: (blockIndex, text) => {
+        console.log(`Reading block ${blockIndex + 1}: "${text}"`);
+      },
+      onBlockComplete: (blockIndex) => {
+        console.log(`Completed block ${blockIndex + 1}`);
       }
     };
-  }, [sound]);
 
-  const playAudio = async (block: TextBlock, blockIndex: number) => {
+    ttsService.current = new TTSService(callbacks);
+
+    // Load page content
+    if (currentPage?.blocks) {
+      ttsService.current.loadContent(currentPage.blocks);
+      console.log(`Loaded ${currentPage.blocks.length} blocks for reading`);
+    }
+
+    // Cleanup on unmount
+    return () => {
+      ttsService.current?.cleanup();
+    };
+  }, [currentPageIndex]);
+
+  const handlePlayPage = async () => {
+    if (!ttsService.current || !currentPage?.blocks) {
+      Alert.alert('Error', 'No content available to read');
+      return;
+    }
+
     try {
-      if (sound) {
-        await sound.unloadAsync();
-      }
-
-      const { sound: newSound } = await Audio.Sound.createAsync(block.audio);
-      setSound(newSound);
-      setCurrentBlockIndex(blockIndex);
-      setIsPlaying(true);
-
-      newSound.setOnPlaybackStatusUpdate((status: AVPlaybackStatus) => {
-        if (status.isLoaded && status.didJustFinish) {
-          setIsPlaying(false);
-          setCurrentBlockIndex(null);
-        }
-      });
-
-      await newSound.playAsync();
+      await ttsService.current.startReading();
     } catch (error) {
-      console.error('Error playing audio:', error);
-      setIsPlaying(false);
-      setCurrentBlockIndex(null);
+      console.error('Error starting TTS:', error);
+      Alert.alert('Error', 'Failed to start reading');
     }
   };
 
-  const stopAudio = async () => {
-    if (sound) {
-      await sound.stopAsync();
-      setIsPlaying(false);
-      setCurrentBlockIndex(null);
-    }
-  };
-
-  const playPageAudio = async () => {
-    if (!currentPage?.blocks) return;
-
-    for (let i = 0; i < currentPage.blocks.length; i++) {
-      await playAudio(currentPage.blocks[i], i);
-      // Wait for audio to finish before playing next
-      await new Promise(resolve => {
-        const checkStatus = () => {
-          if (!isPlaying) {
-            resolve(void 0);
-          } else {
-            setTimeout(checkStatus, 100);
-          }
-        };
-        checkStatus();
-      });
-    }
-  };
-
-  const pauseAudio = async () => {
-    if (sound && isPlaying) {
-      await sound.pauseAsync();
+  const handleStopReading = async () => {
+    if (ttsService.current) {
+      await ttsService.current.stop();
       setIsPlaying(false);
     }
   };
@@ -129,23 +120,17 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
         <View style={styles.controlButtons}>
           <TouchableOpacity 
             style={[styles.controlButton, styles.playButton]} 
-            onPress={playPageAudio}
+            onPress={handlePlayPage}
             disabled={isPlaying}
           >
-            <ThemedText style={styles.controlButtonText}>▶ Play</ThemedText>
-          </TouchableOpacity>
-          
-          <TouchableOpacity 
-            style={[styles.controlButton, styles.pauseButton]} 
-            onPress={pauseAudio}
-            disabled={!isPlaying}
-          >
-            <ThemedText style={styles.controlButtonText}>⏸ Pause</ThemedText>
+            <ThemedText style={styles.controlButtonText}>
+              {isPlaying ? '▶ Reading...' : '▶ Play'}
+            </ThemedText>
           </TouchableOpacity>
           
           <TouchableOpacity 
             style={[styles.controlButton, styles.stopButton]} 
-            onPress={stopAudio}
+            onPress={handleStopReading}
             disabled={!isPlaying}
           >
             <ThemedText style={styles.controlButtonText}>⏹ Stop</ThemedText>
@@ -237,9 +222,6 @@ const styles = StyleSheet.create({
   },
   playButton: {
     backgroundColor: '#4CAF50',
-  },
-  pauseButton: {
-    backgroundColor: '#FF9800',
   },
   stopButton: {
     backgroundColor: '#F44336',

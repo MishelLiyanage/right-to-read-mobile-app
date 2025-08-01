@@ -20,28 +20,43 @@ export const getAllBooks = (): Book[] => {
             },
             {
               id: 3,
-              text: "What grade are you in?",
+              text: "Grade 3",
               audio: require('@/data/grade_3_english_book_page_19/block_3_audio.mp3'),
             },
             {
               id: 4,
-              text: "I'm in grade three.",
+              text: "Grade 4",
               audio: require('@/data/grade_3_english_book_page_19/block_4_audio.mp3'),
             },
             {
               id: 5,
-              text: "I'm in grade four.",
+              text: "Grade 5",
               audio: require('@/data/grade_3_english_book_page_19/block_5_audio.mp3'),
             },
             {
               id: 6,
-              text: "I'm in grade five.",
+              text: "Grade 6",
               audio: require('@/data/grade_3_english_book_page_19/block_6_audio.mp3'),
             },
             {
               id: 7,
-              text: "I'm in grade six.",
+              text: "I'm in grade f ive.",
               audio: require('@/data/grade_3_english_book_page_19/block_7_audio.mp3'),
+            },
+            {
+              id: 8,
+              text: "I'm in grade six.",
+              audio: require('@/data/grade_3_english_book_page_19/block_8_audio.mp3'),
+            },
+            {
+              id: 9,
+              text: "I'm in grade three. I'm in grade four.",
+              audio: require('@/data/grade_3_english_book_page_19/block_9_audio.mp3'),
+            },
+            {
+              id: 10,
+              text: "What grade are you in?",
+              audio: require('@/data/grade_3_english_book_page_19/block_10_audio.mp3'),
             },
           ]
         }
