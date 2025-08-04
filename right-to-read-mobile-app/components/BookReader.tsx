@@ -7,7 +7,7 @@ import { TTSService, TTSServiceCallbacks } from '@/services/ttsService';
 import { Book } from '@/types/book';
 import { Image } from 'expo-image';
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Alert, Dimensions, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 interface BookReaderProps {
   book: Book;
@@ -17,7 +17,7 @@ interface BookReaderProps {
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 // Original page dimensions based on coordinate analysis
-const ORIGINAL_PAGE_SIZE: PageSize = { width: 511, height: 755 };
+const ORIGINAL_PAGE_SIZE: PageSize = { width: 612, height: 774 };
 
 export default function BookReader({ book, onClose }: BookReaderProps) {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
@@ -163,45 +163,51 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
       </View>
 
       {/* Page Content */}
-      <View style={styles.content}>
-        <Image
-          source={currentPage.image}
-          style={styles.pageImage}
-          contentFit="contain"
-          onLoad={onImageLoad}
-          onLayout={onImageLayout}
-        />
-        
-        {/* Text Highlighting Overlay */}
-        {currentBlockHighlightData && (() => {
-          const renderedImageSize = getRenderedImageSize();
-          const imageOffset = getImageOffset();
-          if (renderedImageSize) {
-            console.log(`Using rendered image size for highlighting: ${renderedImageSize.width}x${renderedImageSize.height}`);
+      <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.scrollContent}>
+        <View style={styles.imageContainer}>
+          <Image
+            source={currentPage.image}
+            style={styles.pageImage}
+            contentFit="cover"
+            onLoad={onImageLoad}
+            onLayout={onImageLayout}
+          />
+          
+          {/* Text Highlighting Overlay */}
+          {currentBlockHighlightData && (() => {
+            // Use full screen width and calculated height based on aspect ratio
+            const displayImageSize = {
+              width: screenWidth,
+              height: screenWidth / (ORIGINAL_PAGE_SIZE.width / ORIGINAL_PAGE_SIZE.height)
+            };
+            const imageOffset = { x: 0, y: 0 }; // No offset since we're using full width
+            
+            console.log(`Using display image size for highlighting: ${displayImageSize.width}x${displayImageSize.height}`);
             console.log(`Original page size: ${ORIGINAL_PAGE_SIZE.width}x${ORIGINAL_PAGE_SIZE.height}`);
             console.log(`Image offset: x=${imageOffset.x}, y=${imageOffset.y}`);
-          }
-          return renderedImageSize && (
-            <TextHighlighter
-              blockData={{
-                id: currentBlockHighlightData.blockId,
-                text: currentBlockHighlightData.text,
-                words: currentBlockHighlightData.words,
-                bounding_boxes: currentBlockHighlightData.bounding_boxes
-              }}
-              speechMarks={currentBlockHighlightData.speechMarks}
-              isPlaying={isPlaying && !isPaused}
-              currentTime={currentPlaybackPosition}
-              originalPageSize={ORIGINAL_PAGE_SIZE}
-              renderedImageSize={renderedImageSize}
-              imageOffset={imageOffset}
-              onWordHighlight={(wordIndex, word) => {
-                console.log(`Highlighting word ${wordIndex}: ${word}`);
-              }}
-            />
-          );
-        })()}
-      </View>
+            
+            return (
+              <TextHighlighter
+                blockData={{
+                  id: currentBlockHighlightData.blockId,
+                  text: currentBlockHighlightData.text,
+                  words: currentBlockHighlightData.words,
+                  bounding_boxes: currentBlockHighlightData.bounding_boxes
+                }}
+                speechMarks={currentBlockHighlightData.speechMarks}
+                isPlaying={isPlaying && !isPaused}
+                currentTime={currentPlaybackPosition}
+                originalPageSize={ORIGINAL_PAGE_SIZE}
+                renderedImageSize={displayImageSize}
+                imageOffset={imageOffset}
+                onWordHighlight={(wordIndex, word) => {
+                  console.log(`Highlighting word ${wordIndex}: ${word}`);
+                }}
+              />
+            );
+          })()}
+        </View>
+      </ScrollView>
 
       {/* Audio Controls */}
       <View style={styles.audioControls}>
@@ -252,7 +258,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#fff',
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingVertical: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#e0e0e0',
@@ -285,29 +291,32 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
   },
-  content: {
+  scrollContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: 'flex-start',
+  },
+  imageContainer: {
+    width: screenWidth,
   },
   pageImage: {
-    width: screenWidth * 0.9,
-    height: screenHeight * 0.6,
-    borderRadius: 8,
+    width: screenWidth,
+    aspectRatio: ORIGINAL_PAGE_SIZE.width / ORIGINAL_PAGE_SIZE.height,
   },
   audioControls: {
     backgroundColor: '#fff',
-    padding: 20,
+    padding: 12,
     borderTopWidth: 1,
     borderTopColor: '#e0e0e0',
   },
   audioTitle: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
     color: '#333',
     textAlign: 'center',
-    marginBottom: 15,
+    marginBottom: 8,
   },
   controlButtons: {
     flexDirection: 'row',
@@ -315,10 +324,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   controlButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 25,
-    minWidth: 80,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    minWidth: 70,
     alignItems: 'center',
   },
   playButton: {
@@ -335,7 +344,7 @@ const styles = StyleSheet.create({
   },
   controlButtonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
   },
 });
