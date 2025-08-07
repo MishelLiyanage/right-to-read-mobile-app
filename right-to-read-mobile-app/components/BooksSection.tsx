@@ -1,35 +1,23 @@
-import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
 import BookCard from '@/components/BookCard';
+import { getAllBooks } from '@/data/books';
+import { Book } from '@/types/book';
+import React from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
-const books = [
-  {
-    id: 1,
-    title: 'Grade 3 English Book',
-    backgroundColor: '#4A90E2',
-  },
-  {
-    id: 2,
-    title: 'The Adventures of Little Star',
-    backgroundColor: '#7ED321',
-  },
-  {
-    id: 3,
-    title: 'Rainbow Friends',
-    backgroundColor: '#F5A623',
-  },
-  {
-    id: 4,
-    title: 'The Brave Little Mouse',
-    backgroundColor: '#D0021B',
-  },
-];
+interface BooksSectionProps {
+  onBookPress: (book: Book) => void;
+}
 
-export default function BooksSection() {
-  const handleBookPress = (book: any) => {
+export default function BooksSection({ onBookPress }: BooksSectionProps) {
+  const books = getAllBooks();
+
+  const handleBookPress = (book: Book) => {
     console.log('Book pressed:', book.title);
-    // Handle book navigation
+    if (book.hasData) {
+      onBookPress(book);
+    } else {
+      console.log('Book content not available yet');
+    }
   };
 
   return (
@@ -40,6 +28,7 @@ export default function BooksSection() {
             key={book.id}
             title={book.title}
             backgroundColor={book.backgroundColor}
+            hasData={book.hasData}
             onPress={() => handleBookPress(book)}
           />
         ))}
