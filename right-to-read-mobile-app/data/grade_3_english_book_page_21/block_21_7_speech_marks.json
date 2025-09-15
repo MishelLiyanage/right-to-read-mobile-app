@@ -1,0 +1,16 @@
+[
+    {
+        "time": 6,
+        "type": "word",
+        "start": 28,
+        "end": 33,
+        "value": "Hello"
+    },
+    {
+        "time": 931,
+        "type": "word",
+        "start": 35,
+        "end": 40,
+        "value": "Meenu"
+    }
+]

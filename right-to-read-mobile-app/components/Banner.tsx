@@ -9,6 +9,9 @@ export default function Banner() {
         source={require('@/assets/images/banner.jpg')}
         style={styles.bannerImage}
         contentFit="cover"
+        transition={200}
+        cachePolicy="memory-disk"
+        priority="high"
       />
     </View>
   );
