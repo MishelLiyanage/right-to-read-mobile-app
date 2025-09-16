@@ -88,7 +88,7 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
           const blockId = currentPage?.blocks?.[blockIndex]?.id;
           if (blockId) {
             try {
-              const highlightData = await highlightDataService.getBlockHighlightData(blockId);
+              const highlightData = await highlightDataService.getBlockHighlightData(blockId, currentPage.pageNumber);
               setCurrentBlockHighlightData(highlightData);
             } catch (error) {
               console.error('Failed to load highlight data:', error);
@@ -249,16 +249,33 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
             
             {/* Text Highlighting Overlay */}
           {currentBlockHighlightData && (() => {
-            // Use full screen width and calculated height based on aspect ratio
+            // Calculate display image size based on full height layout
+            // The image takes the full available height (from top to audio controls) and adjusts width maintaining aspect ratio
+            const availableHeight = screenHeight - 100; // Only subtract space for audio controls at bottom
+            const aspectRatio = ORIGINAL_PAGE_SIZE.width / ORIGINAL_PAGE_SIZE.height;
+            
+            // Calculate display size - image fills height, width is calculated from aspect ratio
             const displayImageSize = {
-              width: screenWidth,
-              height: screenWidth / (ORIGINAL_PAGE_SIZE.width / ORIGINAL_PAGE_SIZE.height)
+              width: availableHeight * aspectRatio,
+              height: availableHeight
             };
-            const imageOffset = { x: 0, y: 0 }; // No offset since we're using full width
+            
+            // If calculated width exceeds screen width, limit by width instead
+            if (displayImageSize.width > screenWidth) {
+              displayImageSize.width = screenWidth;
+              displayImageSize.height = screenWidth / aspectRatio;
+            }
+            
+            // Calculate image offset for centering
+            const imageOffset = {
+              x: (screenWidth - displayImageSize.width) / 2,
+              y: (availableHeight - displayImageSize.height) / 2
+            };
             
             console.log(`Using display image size for highlighting: ${displayImageSize.width}x${displayImageSize.height}`);
             console.log(`Original page size: ${ORIGINAL_PAGE_SIZE.width}x${ORIGINAL_PAGE_SIZE.height}`);
             console.log(`Image offset: x=${imageOffset.x}, y=${imageOffset.y}`);
+            console.log(`Available height: ${availableHeight}, Screen height: ${screenHeight}, Aspect ratio: ${aspectRatio}`);
             
             return (
               <TextHighlighter
