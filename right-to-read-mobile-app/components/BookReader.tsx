@@ -241,13 +241,13 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
           <View style={styles.imageContainer}>
             <Image
               source={currentPage.image}
-            style={styles.pageImage}
-            contentFit="cover"
-            onLoad={onImageLoad}
-            onLayout={onImageLayout}
-          />
-          
-          {/* Text Highlighting Overlay */}
+              style={styles.pageImage}
+              contentFit="contain"
+              onLoad={onImageLoad}
+              onLayout={onImageLayout}
+            />
+            
+            {/* Text Highlighting Overlay */}
           {currentBlockHighlightData && (() => {
             // Use full screen width and calculated height based on aspect ratio
             const displayImageSize = {
@@ -401,15 +401,21 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    flexGrow: 1,
-    justifyContent: 'flex-start',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '100%',
   },
   imageContainer: {
-    width: screenWidth,
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   pageImage: {
-    width: screenWidth,
-    aspectRatio: ORIGINAL_PAGE_SIZE.width / ORIGINAL_PAGE_SIZE.height,
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
   },
   audioControls: {
     backgroundColor: '#fff',
