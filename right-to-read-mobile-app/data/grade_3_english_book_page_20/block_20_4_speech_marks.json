@@ -1,0 +1,44 @@
+[
+    {
+        "time": 6,
+        "type": "word",
+        "start": 28,
+        "end": 29,
+        "value": "I"
+    },
+    {
+        "time": 132,
+        "type": "word",
+        "start": 30,
+        "end": 34,
+        "value": "live"
+    },
+    {
+        "time": 362,
+        "type": "word",
+        "start": 35,
+        "end": 37,
+        "value": "in"
+    },
+    {
+        "time": 998,
+        "type": "word",
+        "start": 47,
+        "end": 48,
+        "value": "I"
+    },
+    {
+        "time": 1087,
+        "type": "word",
+        "start": 49,
+        "end": 53,
+        "value": "live"
+    },
+    {
+        "time": 1357,
+        "type": "word",
+        "start": 54,
+        "end": 56,
+        "value": "in"
+    }
+]

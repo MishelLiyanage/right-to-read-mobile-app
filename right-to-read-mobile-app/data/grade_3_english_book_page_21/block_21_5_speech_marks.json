@@ -1,0 +1,44 @@
+[
+    {
+        "time": 6,
+        "type": "word",
+        "start": 28,
+        "end": 33,
+        "value": "Meenu"
+    },
+    {
+        "time": 861,
+        "type": "word",
+        "start": 35,
+        "end": 39,
+        "value": "this"
+    },
+    {
+        "time": 1081,
+        "type": "word",
+        "start": 40,
+        "end": 42,
+        "value": "is"
+    },
+    {
+        "time": 1255,
+        "type": "word",
+        "start": 43,
+        "end": 45,
+        "value": "my"
+    },
+    {
+        "time": 1457,
+        "type": "word",
+        "start": 46,
+        "end": 52,
+        "value": "friend"
+    },
+    {
+        "time": 2207,
+        "type": "word",
+        "start": 54,
+        "end": 60,
+        "value": "Rasini"
+    }
+]

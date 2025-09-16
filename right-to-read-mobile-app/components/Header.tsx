@@ -1,9 +1,11 @@
 import { Image } from 'expo-image';
 import React, { useState } from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import PullBooksDialog from './PullBooksDialog';
 
 export default function Header() {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showPullBooksDialog, setShowPullBooksDialog] = useState(false);
 
   const handleMenuPress = () => {
     setShowDropdown(!showDropdown);
@@ -15,7 +17,7 @@ export default function Header() {
     // Handle navigation based on item
     switch (item) {
       case 'Pull Books':
-        // Handle pull books action
+        setShowPullBooksDialog(true);
         break;
       case 'Profile':
         // Handle profile navigation
@@ -24,6 +26,12 @@ export default function Header() {
         // Handle logout action
         break;
     }
+  };
+
+  const handlePullBooksSuccess = () => {
+    // Refresh the books list or trigger a re-render
+    console.log('Books pulled successfully!');
+    // TODO: Add logic to refresh the books data
   };
 
   return (
@@ -73,6 +81,13 @@ export default function Header() {
           </Modal>
         )}
       </View>
+      
+      {/* Pull Books Dialog */}
+      <PullBooksDialog
+        visible={showPullBooksDialog}
+        onClose={() => setShowPullBooksDialog(false)}
+        onSuccess={handlePullBooksSuccess}
+      />
     </View>
   );
 }

@@ -1,0 +1,163 @@
+[
+    {
+        "time": 6,
+        "type": "word",
+        "start": 28,
+        "end": 33,
+        "value": "Stand"
+    },
+    {
+        "time": 473,
+        "type": "word",
+        "start": 34,
+        "end": 36,
+        "value": "in"
+    },
+    {
+        "time": 610,
+        "type": "word",
+        "start": 37,
+        "end": 38,
+        "value": "a"
+    },
+    {
+        "time": 666,
+        "type": "word",
+        "start": 39,
+        "end": 45,
+        "value": "circle"
+    },
+    {
+        "time": 1699,
+        "type": "word",
+        "start": 47,
+        "end": 50,
+        "value": "Ask"
+    },
+    {
+        "time": 2080,
+        "type": "word",
+        "start": 51,
+        "end": 52,
+        "value": "a"
+    },
+    {
+        "time": 2127,
+        "type": "word",
+        "start": 53,
+        "end": 59,
+        "value": "friend"
+    },
+    {
+        "time": 2477,
+        "type": "word",
+        "start": 60,
+        "end": 62,
+        "value": "to"
+    },
+    {
+        "time": 2589,
+        "type": "word",
+        "start": 63,
+        "end": 68,
+        "value": "stand"
+    },
+    {
+        "time": 3045,
+        "type": "word",
+        "start": 69,
+        "end": 71,
+        "value": "in"
+    },
+    {
+        "time": 3144,
+        "type": "word",
+        "start": 72,
+        "end": 75,
+        "value": "the"
+    },
+    {
+        "time": 3214,
+        "type": "word",
+        "start": 76,
+        "end": 82,
+        "value": "middle"
+    },
+    {
+        "time": 4057,
+        "type": "word",
+        "start": 84,
+        "end": 88,
+        "value": "Pass"
+    },
+    {
+        "time": 4362,
+        "type": "word",
+        "start": 89,
+        "end": 92,
+        "value": "the"
+    },
+    {
+        "time": 4499,
+        "type": "word",
+        "start": 93,
+        "end": 97,
+        "value": "ball"
+    },
+    {
+        "time": 5313,
+        "type": "word",
+        "start": 99,
+        "end": 107,
+        "value": "Practise"
+    },
+    {
+        "time": 6448,
+        "type": "word",
+        "start": 112,
+        "end": 117,
+        "value": "Where"
+    },
+    {
+        "time": 6690,
+        "type": "word",
+        "start": 118,
+        "end": 120,
+        "value": "do"
+    },
+    {
+        "time": 6791,
+        "type": "word",
+        "start": 121,
+        "end": 124,
+        "value": "you"
+    },
+    {
+        "time": 6937,
+        "type": "word",
+        "start": 125,
+        "end": 129,
+        "value": "live"
+    },
+    {
+        "time": 7761,
+        "type": "word",
+        "start": 137,
+        "end": 138,
+        "value": "I"
+    },
+    {
+        "time": 7891,
+        "type": "word",
+        "start": 139,
+        "end": 143,
+        "value": "live"
+    },
+    {
+        "time": 8203,
+        "type": "word",
+        "start": 144,
+        "end": 146,
+        "value": "in"
+    }
+]

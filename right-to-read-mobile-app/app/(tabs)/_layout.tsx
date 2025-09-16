@@ -1,6 +1,5 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { Platform } from 'react-native';
 
 import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
@@ -18,26 +17,23 @@ export default function TabLayout() {
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
+        tabBarStyle: {
+          display: 'none', // Hide the bottom tab bar
+        },
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Books',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="book.fill" color={color} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={24} name="book.fill" color={color} />,
         }}
       />
       <Tabs.Screen
         name="explore"
         options={{
           title: 'Recent',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="clock.fill" color={color} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={24} name="clock.fill" color={color} />,
+          href: null, // This will hide the route from navigation
         }}
       />
     </Tabs>

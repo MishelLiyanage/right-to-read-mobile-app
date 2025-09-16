@@ -1,0 +1,44 @@
+[
+    {
+        "time": 6,
+        "type": "word",
+        "start": 28,
+        "end": 32,
+        "value": "Play"
+    },
+    {
+        "time": 314,
+        "type": "word",
+        "start": 33,
+        "end": 36,
+        "value": "the"
+    },
+    {
+        "time": 447,
+        "type": "word",
+        "start": 37,
+        "end": 41,
+        "value": "game"
+    },
+    {
+        "time": 1370,
+        "type": "word",
+        "start": 43,
+        "end": 49,
+        "value": "Listen"
+    },
+    {
+        "time": 1748,
+        "type": "word",
+        "start": 50,
+        "end": 53,
+        "value": "and"
+    },
+    {
+        "time": 1912,
+        "type": "word",
+        "start": 54,
+        "end": 62,
+        "value": "practise"
+    }
+]

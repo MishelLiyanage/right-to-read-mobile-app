@@ -9,6 +9,9 @@ export default function Banner() {
         source={require('@/assets/images/banner.jpg')}
         style={styles.bannerImage}
         contentFit="cover"
+        transition={200}
+        cachePolicy="memory-disk"
+        priority="high"
       />
     </View>
   );
@@ -18,7 +21,7 @@ const styles = StyleSheet.create({
   banner: {
     height: 200,
     marginHorizontal: 20,
-    marginVertical: 15,
+    marginVertical: 10,
     borderRadius: 12,
     overflow: 'hidden',
   },

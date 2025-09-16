@@ -1,0 +1,23 @@
+[
+    {
+        "time": 6,
+        "type": "word",
+        "start": 28,
+        "end": 29,
+        "value": "I"
+    },
+    {
+        "time": 136,
+        "type": "word",
+        "start": 30,
+        "end": 34,
+        "value": "live"
+    },
+    {
+        "time": 448,
+        "type": "word",
+        "start": 35,
+        "end": 37,
+        "value": "in"
+    }
+]

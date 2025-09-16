@@ -7,7 +7,7 @@ import { TTSService, TTSServiceCallbacks } from '@/services/ttsService';
 import { Book } from '@/types/book';
 import { Image } from 'expo-image';
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, Dimensions, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Alert, Animated, Dimensions, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 interface BookReaderProps {
   book: Book;
@@ -26,71 +26,155 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
   const [currentBlockIndex, setCurrentBlockIndex] = useState(-1);
   const [currentPlaybackPosition, setCurrentPlaybackPosition] = useState(0);
   const [currentBlockHighlightData, setCurrentBlockHighlightData] = useState<BlockHighlightData | null>(null);
+  const [isPageTransitioning, setIsPageTransitioning] = useState(false);
 
   const { sourceImageDimensions, containerDimensions, getRenderedImageSize, getImageOffset, onImageLoad, onImageLayout } = useImageLayout();
+  const pageTransition = useRef(new Animated.Value(1)).current;
 
   const ttsService = useRef<TTSService | null>(null);
   const currentPage = book.pages?.[currentPageIndex];
+  const totalPages = book.pages?.length || 0;
 
   useEffect(() => {
-    // Initialize TTS Service with callbacks
-    const callbacks: TTSServiceCallbacks = {
-      onPlaybackStart: () => {
-        setIsPlaying(true);
-        setIsPaused(false);
-        console.log('Started reading page content');
-      },
-      onPlaybackComplete: () => {
-        setIsPlaying(false);
-        setIsPaused(false);
-        setCurrentBlockIndex(-1);
-        setCurrentBlockHighlightData(null);
-        console.log('Completed reading page content');
-      },
-      onPlaybackError: (error) => {
-        setIsPlaying(false);
-        setIsPaused(false);
-        setCurrentBlockIndex(-1);
-        setCurrentBlockHighlightData(null);
-        Alert.alert('Playback Error', error);
-        console.error('TTS Error:', error);
-      },
-      onBlockStart: async (blockIndex, text) => {
-        setCurrentBlockIndex(blockIndex);
-        console.log(`Reading block ${blockIndex + 1}: "${text}"`);
-        
-        // Load highlighting data for current block
-        const blockId = currentPage?.blocks?.[blockIndex]?.id;
-        if (blockId) {
-          try {
-            const highlightData = await highlightDataService.getBlockHighlightData(blockId);
-            setCurrentBlockHighlightData(highlightData);
-          } catch (error) {
-            console.error('Failed to load highlight data:', error);
-          }
-        }
-      },
-      onBlockComplete: (blockIndex) => {
-        console.log(`Completed block ${blockIndex + 1}`);
-      },
-      onPlaybackProgress: (position, duration, blockIndex) => {
-        setCurrentPlaybackPosition(position);
+    console.log(`Initializing page ${currentPageIndex + 1} of ${totalPages}`);
+    
+    // Cleanup previous TTS service
+    const cleanupPrevious = async () => {
+      if (ttsService.current) {
+        await ttsService.current.cleanup();
+        ttsService.current = null;
       }
     };
 
-    ttsService.current = new TTSService(callbacks);
+    // Initialize new page
+    const initializePage = async () => {
+      // Clean up previous instance first
+      await cleanupPrevious();
+      
+      // Reset states for new page
+      setIsPlaying(false);
+      setIsPaused(false);
+      setCurrentBlockIndex(0);
+      setCurrentBlockHighlightData(null);
+      setCurrentPlaybackPosition(0);
 
-    // Load page content
-    if (currentPage?.blocks) {
-      ttsService.current.loadContent(currentPage.blocks);
-      console.log(`Loaded ${currentPage.blocks.length} blocks for reading`);
-    }
+      // Initialize TTS Service with callbacks
+      const callbacks: TTSServiceCallbacks = {
+        onPlaybackStart: () => {
+          setIsPlaying(true);
+          setIsPaused(false);
+          console.log('Started reading page content');
+        },
+        onPlaybackComplete: () => {
+          setIsPlaying(false);
+          setIsPaused(false);
+          setCurrentBlockIndex(0);
+          setCurrentBlockHighlightData(null);
+          console.log('Completed reading page content');
+        },
+        onPlaybackError: (error) => {
+          setIsPlaying(false);
+          setIsPaused(false);
+          setCurrentBlockIndex(0);
+          setCurrentBlockHighlightData(null);
+          Alert.alert('Playback Error', error);
+          console.error('TTS Error:', error);
+        },
+        onBlockStart: async (blockIndex, text) => {
+          setCurrentBlockIndex(blockIndex);
+          console.log(`Reading block ${blockIndex + 1}: "${text}"`);
+          
+          // Load highlighting data for current block
+          const blockId = currentPage?.blocks?.[blockIndex]?.id;
+          if (blockId) {
+            try {
+              const highlightData = await highlightDataService.getBlockHighlightData(blockId);
+              setCurrentBlockHighlightData(highlightData);
+            } catch (error) {
+              console.error('Failed to load highlight data:', error);
+            }
+          }
+        },
+        onBlockComplete: (blockIndex) => {
+          console.log(`Completed block ${blockIndex + 1}`);
+        },
+        onPlaybackProgress: (position, duration, blockIndex) => {
+          setCurrentPlaybackPosition(position);
+        }
+      };
+
+      // Create and initialize new TTS service
+      ttsService.current = new TTSService(callbacks);
+
+      if (currentPage?.blocks && ttsService.current) {
+        try {
+          await ttsService.current.initialize();
+          ttsService.current.loadContent(currentPage.blocks);
+          console.log(`TTS initialized and loaded ${currentPage.blocks.length} blocks for page ${currentPageIndex + 1}`);
+        } catch (error) {
+          console.error('Failed to initialize TTS Service:', error);
+        }
+      }
+    };
+
+    initializePage();
 
     // Cleanup on unmount
     return () => {
-      ttsService.current?.cleanup();
+      if (ttsService.current) {
+        ttsService.current.cleanup();
+      }
     };
   }, [currentPageIndex]);
+
+  // Navigation functions
+  const handlePreviousPage = () => {
+    if (isPageTransitioning || currentPageIndex <= 0) return;
+    
+    setIsPageTransitioning(true);
+    
+    // Fade out
+    Animated.timing(pageTransition, {
+      toValue: 0,
+      duration: 150,
+      useNativeDriver: true,
+    }).start(() => {
+      setCurrentPageIndex(currentPageIndex - 1);
+      
+      // Fade in
+      Animated.timing(pageTransition, {
+        toValue: 1,
+        duration: 150,
+        useNativeDriver: true,
+      }).start(() => {
+        setIsPageTransitioning(false);
+      });
+    });
+  };
+
+  const handleNextPage = () => {
+    if (isPageTransitioning || !book?.pages || currentPageIndex >= book.pages.length - 1) return;
+    
+    setIsPageTransitioning(true);
+    
+    // Fade out
+    Animated.timing(pageTransition, {
+      toValue: 0,
+      duration: 150,
+      useNativeDriver: true,
+    }).start(() => {
+      setCurrentPageIndex(currentPageIndex + 1);
+      
+      // Fade in
+      Animated.timing(pageTransition, {
+        toValue: 1,
+        duration: 150,
+        useNativeDriver: true,
+      }).start(() => {
+        setIsPageTransitioning(false);
+      });
+    });
+  };
 
   const handlePlayPage = async () => {
     if (!ttsService.current || !currentPage?.blocks) {
@@ -146,27 +230,17 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={onClose} style={styles.backButton}>
-          <ThemedText style={styles.backText}>←</ThemedText>
-        </TouchableOpacity>
-        <View style={styles.titleContainer}>
-          <ThemedText style={styles.title}>{book.title}</ThemedText>
-          <ThemedText style={styles.subtitle}>by {book.author}</ThemedText>
-        </View>
-        <View style={styles.pageInfo}>
-          <ThemedText style={styles.pageNumber}>
-            {currentPageIndex + 1} / {book.pages?.length || 1}
-          </ThemedText>
-        </View>
-      </View>
+      {/* Floating Back Button */}
+      <TouchableOpacity onPress={onClose} style={styles.floatingBackButton}>
+        <ThemedText style={styles.backText}>←</ThemedText>
+      </TouchableOpacity>
 
       {/* Page Content */}
-      <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.scrollContent}>
-        <View style={styles.imageContainer}>
-          <Image
-            source={currentPage.image}
+      <Animated.View style={{ flex: 1, opacity: pageTransition }}>
+        <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.scrollContent}>
+          <View style={styles.imageContainer}>
+            <Image
+              source={currentPage.image}
             style={styles.pageImage}
             contentFit="cover"
             onLoad={onImageLoad}
@@ -208,11 +282,15 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
           })()}
         </View>
       </ScrollView>
+      </Animated.View>
 
       {/* Audio Controls */}
       <View style={styles.audioControls}>
         <ThemedText style={styles.audioTitle}>Listen to this page:</ThemedText>
-        <View style={styles.controlButtons}>
+        
+        {/* All Controls in One Row */}
+        <View style={styles.allControlsRow}>
+          {/* Audio Control Buttons */}
           <TouchableOpacity 
             style={[
               styles.controlButton, 
@@ -242,6 +320,47 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
           >
             <ThemedText style={styles.controlButtonText}>⏹ Stop</ThemedText>
           </TouchableOpacity>
+
+          {/* Page Indicator */}
+          <View style={styles.pageIndicatorCenter}>
+            <ThemedText style={styles.pageIndicatorText}>
+              Page {currentPageIndex + 1} of {book?.pages?.length || 0}
+            </ThemedText>
+          </View>
+
+          {/* Previous Navigation Button */}
+          <TouchableOpacity 
+            style={[
+              styles.navigationButton, 
+              currentPageIndex <= 0 ? styles.disabledButton : styles.enabledButton
+            ]} 
+            onPress={handlePreviousPage}
+            disabled={isPageTransitioning || currentPageIndex <= 0}
+          >
+            <ThemedText style={[
+              styles.navigationButtonText,
+              currentPageIndex <= 0 ? styles.disabledText : styles.enabledText
+            ]}>
+              ← Previous
+            </ThemedText>
+          </TouchableOpacity>
+
+          {/* Next Navigation Button */}
+          <TouchableOpacity 
+            style={[
+              styles.navigationButton, 
+              (!book?.pages || currentPageIndex >= book.pages.length - 1) ? styles.disabledButton : styles.enabledButton
+            ]} 
+            onPress={handleNextPage}
+            disabled={isPageTransitioning || !book?.pages || currentPageIndex >= book.pages.length - 1}
+          >
+            <ThemedText style={[
+              styles.navigationButtonText,
+              (!book?.pages || currentPageIndex >= book.pages.length - 1) ? styles.disabledText : styles.enabledText
+            ]}>
+              Next →
+            </ThemedText>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -253,43 +372,30 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f5f5f5',
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  floatingBackButton: {
+    position: 'absolute',
+    top: 50,
+    left: 20,
+    zIndex: 1000,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 25,
+    width: 50,
+    height: 50,
     alignItems: 'center',
-    backgroundColor: '#fff',
-    paddingHorizontal: 10,
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-  },
-  backButton: {
-    padding: 10,
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   backText: {
     fontSize: 24,
     color: '#4A90E2',
-  },
-  titleContainer: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#666',
-    marginTop: 2,
-  },
-  pageInfo: {
-    alignItems: 'center',
-  },
-  pageNumber: {
-    fontSize: 14,
-    color: '#666',
   },
   scrollContainer: {
     flex: 1,
@@ -307,7 +413,9 @@ const styles = StyleSheet.create({
   },
   audioControls: {
     backgroundColor: '#fff',
-    padding: 12,
+    paddingVertical: 6,
+    paddingBottom: 32,
+    paddingHorizontal: 26,
     borderTopWidth: 1,
     borderTopColor: '#e0e0e0',
   },
@@ -316,18 +424,20 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#333',
     textAlign: 'center',
-    marginBottom: 8,
+    marginBottom: 0,
   },
-  controlButtons: {
+  allControlsRow: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 4,
   },
   controlButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    minWidth: 70,
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    borderRadius: 12,
+    minWidth: 50,
     alignItems: 'center',
   },
   playButton: {
@@ -344,7 +454,46 @@ const styles = StyleSheet.create({
   },
   controlButtonText: {
     color: '#fff',
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '600',
+  },
+  navigationButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 16,
+    minWidth: 70,
+    alignItems: 'center',
+  },
+  enabledButton: {
+    backgroundColor: '#4A90E2',
+  },
+  disabledButton: {
+    backgroundColor: '#CCCCCC',
+  },
+  navigationButtonText: {
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  enabledText: {
+    color: '#fff',
+  },
+  disabledText: {
+    color: '#888',
+  },
+  pageIndicator: {
+    alignItems: 'center',
+    flex: 1,
+    marginHorizontal: 20,
+  },
+  pageIndicatorCenter: {
+    alignItems: 'center',
+    minWidth: 80,
+    marginHorizontal: 8,
+  },
+  pageIndicatorText: {
+    fontSize: 12,
+    color: '#666',
+    fontWeight: '500',
+    textAlign: 'center',
   },
 });

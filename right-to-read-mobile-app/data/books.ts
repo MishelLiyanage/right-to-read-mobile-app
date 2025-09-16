@@ -59,6 +59,73 @@ export const getAllBooks = (): Book[] => {
               audio: require('@/data/grade_3_english_book_page_19/block_10_audio.mp3'),
             },
           ]
+        },
+        {
+          pageNumber: 20,
+          image: require('@/data/grade_3_english_book_page_20/grade_3_english_book.pdf_page_20.png'),
+          blocks: [
+            {
+              id: 1,
+              text: "Listen and say.",
+              audio: require('@/data/grade_3_english_book_page_20/block_20_1_audio.mp3'),
+            },
+            {
+              id: 2,
+              text: "Where do you live?",
+              audio: require('@/data/grade_3_english_book_page_20/block_20_2_audio.mp3'),
+            },
+            {
+              id: 3,
+              text: "I live in ...........",
+              audio: require('@/data/grade_3_english_book_page_20/block_20_3_audio.mp3'),
+            },
+            {
+              id: 4,
+              text: "I live in ........ I live in.......",
+              audio: require('@/data/grade_3_english_book_page_20/block_20_4_audio.mp3'),
+            },
+            {
+              id: 5,
+              text: "I live in Matara.",
+              audio: require('@/data/grade_3_english_book_page_20/block_20_5_audio.mp3'),
+            },
+          ]
+        },
+        {
+          pageNumber: 21,
+          image: require('@/data/grade_3_english_book_page_21/grade_3_english_book.pdf_page_21.png'),
+          blocks: [
+            {
+              id: 2,
+              text: "12",
+              audio: require('@/data/grade_3_english_book_page_21/block_21_2_audio.mp3'),
+            },
+            {
+              id: 3,
+              text: "Play the game. Listen and practise.",
+              audio: require('@/data/grade_3_english_book_page_21/block_21_3_audio.mp3'),
+            },
+            {
+              id: 4,
+              text: "Stand in a circle. Ask a friend to stand in the middle. Pass the ball. Practise. \"Where do you live?\" \"I live in ............................",
+              audio: require('@/data/grade_3_english_book_page_21/block_21_4_audio.mp3'),
+            },
+            {
+              id: 5,
+              text: "Say.",
+              audio: require('@/data/grade_3_english_book_page_21/block_21_5_audio.mp3'),
+            },
+            {
+              id: 6,
+              text: "Meenu, this is my friend, Rasini.",
+              audio: require('@/data/grade_3_english_book_page_21/block_21_6_audio.mp3'),
+            },
+            {
+              id: 7,
+              text: "Hello! Rasini.",
+              audio: require('@/data/grade_3_english_book_page_21/block_21_7_audio.mp3'),
+            },
+          ]
         }
       ]
     },
