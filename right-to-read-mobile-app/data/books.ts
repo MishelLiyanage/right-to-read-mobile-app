@@ -150,26 +150,5 @@ export const getAllBooks = (): Book[] => {
       backgroundColor: '#D0021B',
       hasData: false,
     },
-    {
-      id: 5,
-      title: 'The Adventures of Little Star',
-      author: 'Creative Stories',
-      backgroundColor: '#7ED321',
-      hasData: false,
-    },
-    {
-      id: 6,
-      title: 'Rainbow Friends',
-      author: 'Fun Learning',
-      backgroundColor: '#F5A623',
-      hasData: false,
-    },
-    {
-      id: 7,
-      title: 'The Brave Little Mouse',
-      author: 'Animal Tales',
-      backgroundColor: '#D0021B',
-      hasData: false,
-    },
   ];
 };

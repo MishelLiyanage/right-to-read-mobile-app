@@ -414,6 +414,7 @@ const styles = StyleSheet.create({
   audioControls: {
     backgroundColor: '#fff',
     paddingVertical: 6,
+    paddingBottom: 32,
     paddingHorizontal: 26,
     borderTopWidth: 1,
     borderTopColor: '#e0e0e0',
