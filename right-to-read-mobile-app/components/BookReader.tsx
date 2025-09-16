@@ -88,7 +88,7 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
           const blockId = currentPage?.blocks?.[blockIndex]?.id;
           if (blockId) {
             try {
-              const highlightData = await highlightDataService.getBlockHighlightData(blockId);
+              const highlightData = await highlightDataService.getBlockHighlightData(blockId, currentPage.pageNumber);
               setCurrentBlockHighlightData(highlightData);
             } catch (error) {
               console.error('Failed to load highlight data:', error);

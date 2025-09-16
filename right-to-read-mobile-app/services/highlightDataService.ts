@@ -117,29 +117,46 @@ class HighlightDataService {
     }
   }
 
-  async loadBlockData(): Promise<any> {
-    if (this.blockDataCache.has(1)) {
-      return this.blockDataCache.get(1)!;
+  async loadBlockData(pageNumber: number): Promise<any> {
+    const cacheKey = pageNumber;
+    if (this.blockDataCache.has(cacheKey)) {
+      return this.blockDataCache.get(cacheKey)!;
     }
 
     try {
-      const blockData = require('@/data/grade_3_english_book_page_19/grade_3_english_book.pdf_page_19_blocks.json');
-      console.log('Loaded block data with keys:', Object.keys(blockData));
-      this.blockDataCache.set(1, blockData);
+      // Dynamically load block data based on page number
+      let blockData;
+      switch (pageNumber) {
+        case 19:
+          blockData = require('@/data/grade_3_english_book_page_19/grade_3_english_book.pdf_page_19_blocks.json');
+          break;
+        case 20:
+          blockData = require('@/data/grade_3_english_book_page_20/grade_3_english_book.pdf_page_20_blocks.json');
+          break;
+        case 21:
+          blockData = require('@/data/grade_3_english_book_page_21/grade_3_english_book.pdf_page_21_blocks.json');
+          break;
+        default:
+          console.warn(`No block data available for page ${pageNumber}`);
+          return {};
+      }
+      
+      console.log(`Loaded block data for page ${pageNumber} with keys:`, Object.keys(blockData));
+      this.blockDataCache.set(cacheKey, blockData);
       return blockData;
     } catch (error) {
-      console.error('Failed to load block data:', error);
+      console.error(`Failed to load block data for page ${pageNumber}:`, error);
       return {};
     }
   }
 
-  async getBlockHighlightData(blockId: number): Promise<BlockHighlightData | null> {
+  async getBlockHighlightData(blockId: number, pageNumber: number): Promise<BlockHighlightData | null> {
     try {
-      console.log(`Loading highlight data for block ${blockId}`);
+      console.log(`Loading highlight data for block ${blockId} on page ${pageNumber}`);
       
       const [speechMarks, allBlockData] = await Promise.all([
         this.loadSpeechMarks(blockId),
-        this.loadBlockData()
+        this.loadBlockData(pageNumber)
       ]);
 
       console.log(`Speech marks loaded: ${speechMarks.length} items`);
