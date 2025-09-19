@@ -5,6 +5,14 @@ export interface Book {
   backgroundColor: string;
   pages?: BookPage[];
   hasData?: boolean;
+  tableOfContents?: TableOfContentsSection[];
+}
+
+export interface TableOfContentsSection {
+  id: string;
+  title: string;
+  pageNumber: number;
+  description?: string;
 }
 
 export interface BookPage {

@@ -1,0 +1,16 @@
+[
+    {
+        "time": 6,
+        "type": "word",
+        "start": 27,
+        "end": 32,
+        "value": "Hello"
+    },
+    {
+        "time": 898,
+        "type": "word",
+        "start": 34,
+        "end": 39,
+        "value": "Sahan"
+    }
+]

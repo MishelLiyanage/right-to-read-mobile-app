@@ -2,15 +2,15 @@
     {
         "time": 6,
         "type": "word",
-        "start": 28,
-        "end": 33,
+        "start": 27,
+        "end": 32,
         "value": "Hello"
     },
     {
-        "time": 931,
+        "time": 898,
         "type": "word",
-        "start": 35,
-        "end": 40,
+        "start": 34,
+        "end": 39,
         "value": "Meenu"
     }
 ]

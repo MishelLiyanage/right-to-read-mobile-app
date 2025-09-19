@@ -2,43 +2,50 @@
     {
         "time": 6,
         "type": "word",
-        "start": 28,
-        "end": 32,
+        "start": 27,
+        "end": 31,
         "value": "Play"
     },
     {
-        "time": 314,
+        "time": 305,
         "type": "word",
-        "start": 33,
-        "end": 36,
+        "start": 32,
+        "end": 35,
         "value": "the"
     },
     {
-        "time": 447,
+        "time": 439,
         "type": "word",
-        "start": 37,
-        "end": 41,
+        "start": 36,
+        "end": 40,
         "value": "game"
     },
     {
-        "time": 1370,
+        "time": 962,
         "type": "word",
-        "start": 43,
-        "end": 49,
+        "start": 41,
+        "end": 62,
+        "value": "<break time=\"500ms\"/>"
+    },
+    {
+        "time": 1849,
+        "type": "word",
+        "start": 63,
+        "end": 69,
         "value": "Listen"
     },
     {
-        "time": 1748,
+        "time": 2216,
         "type": "word",
-        "start": 50,
-        "end": 53,
+        "start": 70,
+        "end": 73,
         "value": "and"
     },
     {
-        "time": 1912,
+        "time": 2380,
         "type": "word",
-        "start": 54,
-        "end": 62,
+        "start": 74,
+        "end": 82,
         "value": "practise"
     }
 ]

@@ -1,0 +1,380 @@
+{
+    "2": {
+        "text": "Sahan, this is my friend, Nizam.",
+        "words": [
+            "Sahan,",
+            "this",
+            "is",
+            "my",
+            "friend,",
+            "Nizam."
+        ],
+        "bounding_boxes": [
+            [
+                [
+                    67.1802978515625,
+                    95.73599243164062
+                ],
+                [
+                    132.7602996826172,
+                    119.55599212646484
+                ]
+            ],
+            [
+                [
+                    136.560302734375,
+                    95.73599243164062
+                ],
+                [
+                    170.74032592773438,
+                    119.55599212646484
+                ]
+            ],
+            [
+                [
+                    175.74032592773438,
+                    95.73599243164062
+                ],
+                [
+                    189.7203369140625,
+                    119.55599212646484
+                ]
+            ],
+            [
+                [
+                    194.7203369140625,
+                    95.73599243164062
+                ],
+                [
+                    225.20033264160156,
+                    119.55599212646484
+                ]
+            ],
+            [
+                [
+                    79.92029571533203,
+                    119.73599243164062
+                ],
+                [
+                    140.64028930664062,
+                    143.55599975585938
+                ]
+            ],
+            [
+                [
+                    144.64028930664062,
+                    119.73599243164062
+                ],
+                [
+                    213.26028442382812,
+                    143.55599975585938
+                ]
+            ]
+        ],
+        "ssml": "<speak><prosody rate=\"85%\">Sahan,<break time=\"300ms\"/> this is my friend,<break time=\"300ms\"/> Nizam.</prosody></speak>",
+        "dialog": "true",
+        "person_type": "young boy",
+        "voice_id": "Justin",
+        "timing": [
+            {
+                "time": 6,
+                "type": "word",
+                "start": 27,
+                "end": 32,
+                "value": "Sahan"
+            },
+            {
+                "time": 775,
+                "type": "word",
+                "start": 33,
+                "end": 54,
+                "value": "<break time=\"300ms\"/>"
+            },
+            {
+                "time": 1175,
+                "type": "word",
+                "start": 55,
+                "end": 59,
+                "value": "this"
+            },
+            {
+                "time": 1424,
+                "type": "word",
+                "start": 60,
+                "end": 62,
+                "value": "is"
+            },
+            {
+                "time": 1549,
+                "type": "word",
+                "start": 63,
+                "end": 65,
+                "value": "my"
+            },
+            {
+                "time": 1733,
+                "type": "word",
+                "start": 66,
+                "end": 72,
+                "value": "friend"
+            },
+            {
+                "time": 2431,
+                "type": "word",
+                "start": 73,
+                "end": 94,
+                "value": "<break time=\"300ms\"/>"
+            },
+            {
+                "time": 2832,
+                "type": "word",
+                "start": 95,
+                "end": 100,
+                "value": "Nizam"
+            }
+        ]
+    },
+    "3": {
+        "text": "Hello! Sahan.",
+        "words": [
+            "Hello!",
+            "Sahan."
+        ],
+        "bounding_boxes": [
+            [
+                [
+                    332.86029052734375,
+                    424.07598876953125
+                ],
+                [
+                    386.84027099609375,
+                    447.89599609375
+                ]
+            ],
+            [
+                [
+                    327.12030029296875,
+                    448.07598876953125
+                ],
+                [
+                    393.6003112792969,
+                    471.89599609375
+                ]
+            ]
+        ],
+        "ssml": "<speak><prosody rate=\"85%\">Hello! Sahan.</prosody></speak>",
+        "dialog": "true",
+        "person_type": "young girl",
+        "voice_id": "Ivy",
+        "timing": [
+            {
+                "time": 6,
+                "type": "word",
+                "start": 27,
+                "end": 32,
+                "value": "Hello"
+            },
+            {
+                "time": 898,
+                "type": "word",
+                "start": 34,
+                "end": 39,
+                "value": "Sahan"
+            }
+        ]
+    },
+    "4": {
+        "text": "Hello! Nizam.",
+        "words": [
+            "Hello!",
+            "Nizam."
+        ],
+        "bounding_boxes": [
+            [
+                [
+                    425.2803039550781,
+                    90.99594116210938
+                ],
+                [
+                    479.2602844238281,
+                    114.8159408569336
+                ]
+            ],
+            [
+                [
+                    418.4602966308594,
+                    117.99594116210938
+                ],
+                [
+                    487.0802917480469,
+                    141.81594848632812
+                ]
+            ]
+        ],
+        "ssml": "<speak><prosody rate=\"85%\">Hello! Nizam.</prosody></speak>",
+        "dialog": "true",
+        "person_type": "young girl",
+        "voice_id": "Ivy",
+        "timing": [
+            {
+                "time": 6,
+                "type": "word",
+                "start": 27,
+                "end": 32,
+                "value": "Hello"
+            },
+            {
+                "time": 898,
+                "type": "word",
+                "start": 34,
+                "end": 39,
+                "value": "Nizam"
+            }
+        ]
+    },
+    "5": {
+        "text": "Make groups of three. Introduce your friend.",
+        "words": [
+            "Make",
+            "groups",
+            "of",
+            "three.",
+            "Introduce",
+            "your",
+            "friend."
+        ],
+        "bounding_boxes": [
+            [
+                [
+                    69.84819793701172,
+                    584.6949462890625
+                ],
+                [
+                    120.74821472167969,
+                    608.5149536132812
+                ]
+            ],
+            [
+                [
+                    125.74821472167969,
+                    584.6949462890625
+                ],
+                [
+                    189.32823181152344,
+                    608.5149536132812
+                ]
+            ],
+            [
+                [
+                    194.32823181152344,
+                    584.6949462890625
+                ],
+                [
+                    213.3482208251953,
+                    608.5149536132812
+                ]
+            ],
+            [
+                [
+                    217.94822692871094,
+                    584.6949462890625
+                ],
+                [
+                    273.4082336425781,
+                    608.5149536132812
+                ]
+            ],
+            [
+                [
+                    277.4082336425781,
+                    584.6949462890625
+                ],
+                [
+                    368.9282531738281,
+                    608.5149536132812
+                ]
+            ],
+            [
+                [
+                    373.7282409667969,
+                    584.6949462890625
+                ],
+                [
+                    414.46826171875,
+                    608.5149536132812
+                ]
+            ],
+            [
+                [
+                    419.26824951171875,
+                    584.6949462890625
+                ],
+                [
+                    480.88824462890625,
+                    608.5149536132812
+                ]
+            ]
+        ],
+        "ssml": "<speak><prosody rate=\"85%\">Make groups of three.<break time=\"500ms\"/> Introduce your friend.</prosody></speak>",
+        "dialog": "false",
+        "person_type": "narrator",
+        "timing": [
+            {
+                "time": 6,
+                "type": "word",
+                "start": 27,
+                "end": 31,
+                "value": "Make"
+            },
+            {
+                "time": 289,
+                "type": "word",
+                "start": 32,
+                "end": 38,
+                "value": "groups"
+            },
+            {
+                "time": 719,
+                "type": "word",
+                "start": 39,
+                "end": 41,
+                "value": "of"
+            },
+            {
+                "time": 836,
+                "type": "word",
+                "start": 42,
+                "end": 47,
+                "value": "three"
+            },
+            {
+                "time": 1342,
+                "type": "word",
+                "start": 48,
+                "end": 69,
+                "value": "<break time=\"500ms\"/>"
+            },
+            {
+                "time": 2229,
+                "type": "word",
+                "start": 70,
+                "end": 79,
+                "value": "Introduce"
+            },
+            {
+                "time": 2875,
+                "type": "word",
+                "start": 80,
+                "end": 84,
+                "value": "your"
+            },
+            {
+                "time": 3008,
+                "type": "word",
+                "start": 85,
+                "end": 91,
+                "value": "friend"
+            }
+        ]
+    }
+}

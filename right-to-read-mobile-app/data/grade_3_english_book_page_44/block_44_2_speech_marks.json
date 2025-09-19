@@ -1,0 +1,65 @@
+[
+    {
+        "time": 6,
+        "type": "word",
+        "start": 27,
+        "end": 29,
+        "value": "Hi"
+    },
+    {
+        "time": 626,
+        "type": "word",
+        "start": 30,
+        "end": 51,
+        "value": "<break time=\"300ms\"/>"
+    },
+    {
+        "time": 1026,
+        "type": "word",
+        "start": 52,
+        "end": 55,
+        "value": "I'm"
+    },
+    {
+        "time": 1222,
+        "type": "word",
+        "start": 56,
+        "end": 62,
+        "value": "Raveen"
+    },
+    {
+        "time": 1756,
+        "type": "word",
+        "start": 63,
+        "end": 84,
+        "value": "<break time=\"500ms\"/>"
+    },
+    {
+        "time": 2643,
+        "type": "word",
+        "start": 85,
+        "end": 89,
+        "value": "This"
+    },
+    {
+        "time": 2879,
+        "type": "word",
+        "start": 90,
+        "end": 92,
+        "value": "is"
+    },
+    {
+        "time": 3045,
+        "type": "word",
+        "start": 93,
+        "end": 95,
+        "value": "my"
+    },
+    {
+        "time": 3249,
+        "type": "word",
+        "start": 96,
+        "end": 102,
+        "value": "school"
+    }
+]

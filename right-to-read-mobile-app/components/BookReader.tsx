@@ -1,3 +1,4 @@
+import TableOfContentsSidebar from '@/components/TableOfContentsSidebar';
 import TextHighlighter from '@/components/TextHighlighter';
 import { ThemedText } from '@/components/ThemedText';
 import { useImageLayout } from '@/hooks/useImageLayout';
@@ -27,6 +28,7 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
   const [currentPlaybackPosition, setCurrentPlaybackPosition] = useState(0);
   const [currentBlockHighlightData, setCurrentBlockHighlightData] = useState<BlockHighlightData | null>(null);
   const [isPageTransitioning, setIsPageTransitioning] = useState(false);
+  const [isTOCSidebarVisible, setIsTOCSidebarVisible] = useState(false);
 
   const { sourceImageDimensions, containerDimensions, getRenderedImageSize, getImageOffset, onImageLoad, onImageLayout } = useImageLayout();
   const pageTransition = useRef(new Animated.Value(1)).current;
@@ -220,6 +222,19 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
     }
   };
 
+  const handleTOCNavigation = (targetPageNumber: number) => {
+    // Find the page index that corresponds to the target page number
+    const targetPageIndex = book.pages?.findIndex(page => page.pageNumber === targetPageNumber);
+    
+    if (targetPageIndex !== undefined && targetPageIndex !== -1) {
+      setCurrentPageIndex(targetPageIndex);
+    }
+  };
+
+  const handleCloseTOCSidebar = () => {
+    setIsTOCSidebarVisible(false);
+  };
+
   if (!currentPage) {
     return (
       <View style={styles.container}>
@@ -234,6 +249,16 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
       <TouchableOpacity onPress={onClose} style={styles.floatingBackButton}>
         <ThemedText style={styles.backText}>←</ThemedText>
       </TouchableOpacity>
+
+      {/* Floating TOC Button */}
+      {book.tableOfContents && book.tableOfContents.length > 0 && (
+        <TouchableOpacity 
+          onPress={() => setIsTOCSidebarVisible(true)} 
+          style={styles.floatingTOCButton}
+        >
+          <ThemedText style={styles.tocText}>☰</ThemedText>
+        </TouchableOpacity>
+      )}
 
       {/* Page Content */}
       <Animated.View style={{ flex: 1, opacity: pageTransition }}>
@@ -380,6 +405,17 @@ export default function BookReader({ book, onClose }: BookReaderProps) {
           </TouchableOpacity>
         </View>
       </View>
+
+      {/* Table of Contents Sidebar */}
+      {book.tableOfContents && (
+        <TableOfContentsSidebar
+          isVisible={isTOCSidebarVisible}
+          sections={book.tableOfContents}
+          currentPageNumber={currentPage.pageNumber}
+          onClose={handleCloseTOCSidebar}
+          onSectionPress={handleTOCNavigation}
+        />
+      )}
     </View>
   );
 }
@@ -411,6 +447,31 @@ const styles = StyleSheet.create({
   },
   backText: {
     fontSize: 24,
+    color: '#4A90E2',
+    fontWeight: 'bold',
+  },
+  floatingTOCButton: {
+    position: 'absolute',
+    top: 50,
+    right: 20,
+    zIndex: 1000,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 25,
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  tocText: {
+    fontSize: 20,
     color: '#4A90E2',
     fontWeight: 'bold',
   },

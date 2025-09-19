@@ -1,0 +1,23 @@
+[
+    {
+        "time": 6,
+        "type": "word",
+        "start": 27,
+        "end": 30,
+        "value": "Our"
+    },
+    {
+        "time": 219,
+        "type": "word",
+        "start": 31,
+        "end": 37,
+        "value": "school"
+    },
+    {
+        "time": 619,
+        "type": "word",
+        "start": 38,
+        "end": 39,
+        "value": "3"
+    }
+]

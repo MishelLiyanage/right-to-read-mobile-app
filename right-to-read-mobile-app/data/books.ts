@@ -8,6 +8,48 @@ export const getAllBooks = (): Book[] => {
       author: 'Ministry of Education',
       backgroundColor: '#4A90E2',
       hasData: true,
+      tableOfContents: [
+        {
+          id: 'myself',
+          title: 'Myself',
+          pageNumber: 1
+        },
+        {
+          id: 'my-home',
+          title: 'My home',
+          pageNumber: 21
+        },
+        {
+          id: 'our-school',
+          title: 'Our school',
+          pageNumber: 44
+        },
+        {
+          id: 'my-food-bag',
+          title: 'My food bag',
+          pageNumber: 51
+        },
+        {
+          id: 'animal-friends',
+          title: 'Animal friends',
+          pageNumber: 67
+        },
+        {
+          id: 'clothes-we-wear',
+          title: 'Clothes we wear',
+          pageNumber: 85
+        },
+        {
+          id: 'playing-is-fun',
+          title: 'Playing is fun',
+          pageNumber: 94
+        },
+        {
+          id: 'world-around-me',
+          title: 'World around me',
+          pageNumber: 111
+        }
+      ],
       pages: [
         {
           pageNumber: 19,
@@ -61,37 +103,6 @@ export const getAllBooks = (): Book[] => {
           ]
         },
         {
-          pageNumber: 20,
-          image: require('@/data/grade_3_english_book_page_20/grade_3_english_book.pdf_page_20.png'),
-          blocks: [
-            {
-              id: 1,
-              text: "Listen and say.",
-              audio: require('@/data/grade_3_english_book_page_20/block_20_1_audio.mp3'),
-            },
-            {
-              id: 2,
-              text: "Where do you live?",
-              audio: require('@/data/grade_3_english_book_page_20/block_20_2_audio.mp3'),
-            },
-            {
-              id: 3,
-              text: "I live in ...........",
-              audio: require('@/data/grade_3_english_book_page_20/block_20_3_audio.mp3'),
-            },
-            {
-              id: 4,
-              text: "I live in ........ I live in.......",
-              audio: require('@/data/grade_3_english_book_page_20/block_20_4_audio.mp3'),
-            },
-            {
-              id: 5,
-              text: "I live in Matara.",
-              audio: require('@/data/grade_3_english_book_page_20/block_20_5_audio.mp3'),
-            },
-          ]
-        },
-        {
           pageNumber: 21,
           image: require('@/data/grade_3_english_book_page_21/grade_3_english_book.pdf_page_21.png'),
           blocks: [
@@ -124,6 +135,53 @@ export const getAllBooks = (): Book[] => {
               id: 7,
               text: "Hello! Rasini.",
               audio: require('@/data/grade_3_english_book_page_21/block_21_7_audio.mp3'),
+            },
+          ]
+        },
+        {
+          pageNumber: 22,
+          image: require('@/data/grade_3_english_book_page_22/grade_3_english_book.pdf_page_22.png'),
+          blocks: [
+            {
+              id: 2,
+              text: "Sahan, this is my friend, Nizam.",
+              audio: require('@/data/grade_3_english_book_page_22/block_22_2_audio.mp3'),
+            },
+            {
+              id: 3,
+              text: "Hello! Sahan.",
+              audio: require('@/data/grade_3_english_book_page_22/block_22_3_audio.mp3'),
+            },
+            {
+              id: 4,
+              text: "Hello! Nizam.",
+              audio: require('@/data/grade_3_english_book_page_22/block_22_4_audio.mp3'),
+            },
+            {
+              id: 5,
+              text: "Make groups of three. Introduce your friend.",
+              audio: require('@/data/grade_3_english_book_page_22/block_22_5_audio.mp3'),
+            },
+          ]
+        },
+        {
+          pageNumber: 44,
+          image: require('@/data/grade_3_english_book_page_44/grade_3_english_book.pdf_page_44.png'),
+          blocks: [
+            {
+              id: 2,
+              text: "Hi, I'm Raveen. This is my school.",
+              audio: require('@/data/grade_3_english_book_page_44/block_44_2_audio.mp3'),
+            },
+            {
+              id: 3,
+              text: "Listen and say.",
+              audio: require('@/data/grade_3_english_book_page_44/block_44_3_audio.mp3'),
+            },
+            {
+              id: 4,
+              text: "Our school 3",
+              audio: require('@/data/grade_3_english_book_page_44/block_44_4_audio.mp3'),
             },
           ]
         }

@@ -2,162 +2,197 @@
     {
         "time": 6,
         "type": "word",
-        "start": 28,
-        "end": 33,
+        "start": 27,
+        "end": 32,
         "value": "Stand"
     },
     {
-        "time": 473,
+        "time": 466,
         "type": "word",
-        "start": 34,
-        "end": 36,
+        "start": 33,
+        "end": 35,
         "value": "in"
     },
     {
-        "time": 610,
+        "time": 604,
         "type": "word",
-        "start": 37,
-        "end": 38,
+        "start": 36,
+        "end": 37,
         "value": "a"
     },
     {
-        "time": 666,
+        "time": 659,
         "type": "word",
-        "start": 39,
-        "end": 45,
+        "start": 38,
+        "end": 44,
         "value": "circle"
     },
     {
-        "time": 1699,
+        "time": 1307,
         "type": "word",
-        "start": 47,
-        "end": 50,
+        "start": 45,
+        "end": 66,
+        "value": "<break time=\"500ms\"/>"
+    },
+    {
+        "time": 2194,
+        "type": "word",
+        "start": 67,
+        "end": 70,
         "value": "Ask"
     },
     {
-        "time": 2080,
+        "time": 2551,
         "type": "word",
-        "start": 51,
-        "end": 52,
+        "start": 71,
+        "end": 72,
         "value": "a"
     },
     {
-        "time": 2127,
+        "time": 2597,
         "type": "word",
-        "start": 53,
-        "end": 59,
+        "start": 73,
+        "end": 79,
         "value": "friend"
     },
     {
-        "time": 2477,
+        "time": 2934,
         "type": "word",
-        "start": 60,
-        "end": 62,
+        "start": 80,
+        "end": 82,
         "value": "to"
-    },
-    {
-        "time": 2589,
-        "type": "word",
-        "start": 63,
-        "end": 68,
-        "value": "stand"
     },
     {
         "time": 3045,
         "type": "word",
-        "start": 69,
-        "end": 71,
+        "start": 83,
+        "end": 88,
+        "value": "stand"
+    },
+    {
+        "time": 3495,
+        "type": "word",
+        "start": 89,
+        "end": 91,
         "value": "in"
     },
     {
-        "time": 3144,
+        "time": 3594,
         "type": "word",
-        "start": 72,
-        "end": 75,
+        "start": 92,
+        "end": 95,
         "value": "the"
     },
     {
-        "time": 3214,
+        "time": 3664,
         "type": "word",
-        "start": 76,
-        "end": 82,
+        "start": 96,
+        "end": 102,
         "value": "middle"
     },
     {
-        "time": 4057,
+        "time": 4120,
         "type": "word",
-        "start": 84,
-        "end": 88,
+        "start": 103,
+        "end": 124,
+        "value": "<break time=\"500ms\"/>"
+    },
+    {
+        "time": 5007,
+        "type": "word",
+        "start": 125,
+        "end": 129,
         "value": "Pass"
-    },
-    {
-        "time": 4362,
-        "type": "word",
-        "start": 89,
-        "end": 92,
-        "value": "the"
-    },
-    {
-        "time": 4499,
-        "type": "word",
-        "start": 93,
-        "end": 97,
-        "value": "ball"
     },
     {
         "time": 5313,
         "type": "word",
-        "start": 99,
-        "end": 107,
+        "start": 130,
+        "end": 133,
+        "value": "the"
+    },
+    {
+        "time": 5449,
+        "type": "word",
+        "start": 134,
+        "end": 138,
+        "value": "ball"
+    },
+    {
+        "time": 5874,
+        "type": "word",
+        "start": 139,
+        "end": 160,
+        "value": "<break time=\"500ms\"/>"
+    },
+    {
+        "time": 6761,
+        "type": "word",
+        "start": 161,
+        "end": 169,
         "value": "Practise"
     },
     {
-        "time": 6448,
+        "time": 7490,
         "type": "word",
-        "start": 112,
-        "end": 117,
+        "start": 170,
+        "end": 191,
+        "value": "<break time=\"500ms\"/>"
+    },
+    {
+        "time": 8377,
+        "type": "word",
+        "start": 195,
+        "end": 200,
         "value": "Where"
     },
     {
-        "time": 6690,
+        "time": 8603,
         "type": "word",
-        "start": 118,
-        "end": 120,
+        "start": 201,
+        "end": 203,
         "value": "do"
     },
     {
-        "time": 6791,
+        "time": 8705,
         "type": "word",
-        "start": 121,
-        "end": 124,
+        "start": 204,
+        "end": 207,
         "value": "you"
     },
     {
-        "time": 6937,
+        "time": 8846,
         "type": "word",
-        "start": 125,
-        "end": 129,
+        "start": 208,
+        "end": 212,
         "value": "live"
     },
     {
-        "time": 7761,
+        "time": 9642,
         "type": "word",
-        "start": 137,
-        "end": 138,
+        "start": 220,
+        "end": 221,
         "value": "I"
     },
     {
-        "time": 7891,
+        "time": 9771,
         "type": "word",
-        "start": 139,
-        "end": 143,
+        "start": 222,
+        "end": 226,
         "value": "live"
     },
     {
-        "time": 8203,
+        "time": 10072,
         "type": "word",
-        "start": 144,
-        "end": 146,
+        "start": 227,
+        "end": 229,
         "value": "in"
+    },
+    {
+        "time": 10629,
+        "type": "word",
+        "start": 230,
+        "end": 252,
+        "value": "<break time=\"1000ms\"/>"
     }
 ]

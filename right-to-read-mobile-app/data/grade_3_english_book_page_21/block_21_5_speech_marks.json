@@ -2,43 +2,57 @@
     {
         "time": 6,
         "type": "word",
-        "start": 28,
-        "end": 33,
+        "start": 27,
+        "end": 32,
         "value": "Meenu"
     },
     {
-        "time": 861,
+        "time": 722,
         "type": "word",
-        "start": 35,
-        "end": 39,
+        "start": 33,
+        "end": 54,
+        "value": "<break time=\"300ms\"/>"
+    },
+    {
+        "time": 1122,
+        "type": "word",
+        "start": 55,
+        "end": 59,
         "value": "this"
     },
     {
-        "time": 1081,
+        "time": 1370,
         "type": "word",
-        "start": 40,
-        "end": 42,
+        "start": 60,
+        "end": 62,
         "value": "is"
     },
     {
-        "time": 1255,
+        "time": 1495,
         "type": "word",
-        "start": 43,
-        "end": 45,
+        "start": 63,
+        "end": 65,
         "value": "my"
     },
     {
-        "time": 1457,
+        "time": 1680,
         "type": "word",
-        "start": 46,
-        "end": 52,
+        "start": 66,
+        "end": 72,
         "value": "friend"
     },
     {
-        "time": 2207,
+        "time": 2496,
         "type": "word",
-        "start": 54,
-        "end": 60,
+        "start": 73,
+        "end": 94,
+        "value": "<break time=\"300ms\"/>"
+    },
+    {
+        "time": 2896,
+        "type": "word",
+        "start": 95,
+        "end": 101,
         "value": "Rasini"
     }
 ]

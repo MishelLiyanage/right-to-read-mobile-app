@@ -1,0 +1,58 @@
+[
+    {
+        "time": 6,
+        "type": "word",
+        "start": 27,
+        "end": 31,
+        "value": "Make"
+    },
+    {
+        "time": 289,
+        "type": "word",
+        "start": 32,
+        "end": 38,
+        "value": "groups"
+    },
+    {
+        "time": 719,
+        "type": "word",
+        "start": 39,
+        "end": 41,
+        "value": "of"
+    },
+    {
+        "time": 836,
+        "type": "word",
+        "start": 42,
+        "end": 47,
+        "value": "three"
+    },
+    {
+        "time": 1342,
+        "type": "word",
+        "start": 48,
+        "end": 69,
+        "value": "<break time=\"500ms\"/>"
+    },
+    {
+        "time": 2229,
+        "type": "word",
+        "start": 70,
+        "end": 79,
+        "value": "Introduce"
+    },
+    {
+        "time": 2875,
+        "type": "word",
+        "start": 80,
+        "end": 84,
+        "value": "your"
+    },
+    {
+        "time": 3008,
+        "type": "word",
+        "start": 85,
+        "end": 91,
+        "value": "friend"
+    }
+]

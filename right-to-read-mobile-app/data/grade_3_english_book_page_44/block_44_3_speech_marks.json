@@ -1,0 +1,23 @@
+[
+    {
+        "time": 6,
+        "type": "word",
+        "start": 27,
+        "end": 33,
+        "value": "Listen"
+    },
+    {
+        "time": 458,
+        "type": "word",
+        "start": 34,
+        "end": 37,
+        "value": "and"
+    },
+    {
+        "time": 725,
+        "type": "word",
+        "start": 38,
+        "end": 41,
+        "value": "say"
+    }
+]
